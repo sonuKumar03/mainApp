@@ -1,32 +1,14 @@
 import React from "react";
-import { Dashboard } from "./Dashboard";
-import { Breadcrumb } from "./Breadcrumb";
-import { SideMenu } from "./SideMenu";
-import { Switch, Route, useRouteMatch} from "react-router-dom";
-import { Stores } from "./Stores";
+import { Link } from "react-router-dom";
 export const Home = () => {
-  const {path} = useRouteMatch();
   return (
-    <div className="columns">
-      <div className="column is-3 has-background-light">
-        <SideMenu/>
-      </div>
-      <div className="column">
-        <Breadcrumb />
-        <Switch>
-        <Route  path={`${path}/editStore`}><EditStore/></Route>
-          <Route path={`${path}/:id`}><Stores/></Route>
-          <Route exact path={`${path}`}><Dashboard/></Route>
-        </Switch>
-      </div>
+    <div className="has-margin-top-20">
+      <div className="title has-text-centered has-text-danger"> Home Page</div>
+        <div className="buttons">
+          <Link to="/login" className="button is-info">Login</Link>
+          <Link to="/signup" className="button is-success">Sign Up</Link>
+        </div>
+      <div className="footer has-text-centered  has-background-dark has-text-white">Footer</div>
     </div>
   );
 };
-
-const EditStore = ()=>{
-  return (
-    <div>
-      EDIT store
-    </div>
-  )
-}

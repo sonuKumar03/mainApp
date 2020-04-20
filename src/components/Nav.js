@@ -1,7 +1,6 @@
 import React, { useEffect } from "react";
 import { Link } from "react-router-dom";
 import "bulma-badge/dist/css/bulma-badge.min.css";
-
 export let Nav = () => {
   let listener = () => {
     let burger = document.querySelector(".navbar-burger");
@@ -14,17 +13,13 @@ export let Nav = () => {
   let addListener = () => {
     if (document.readyState !== "loading") {
       listener();
-      console.log("loading");
     } else {
       document.addEventListener("DOMContentLoaded", listener);
-      console.log("loaded");
     }
   };
-
-  useEffect(addListener, []);
-
-  return (
-    <nav className="navbar is-transparent">
+    useEffect(addListener, []);
+return (
+    <nav className="navbar is-fixed-top is-primary">
       <div className="navbar-brand">
         <Link to="/" className="navbar-item is-bold  is-size-4">
           <span className="icon">
@@ -40,12 +35,10 @@ export let Nav = () => {
 
       <div className="navbar-menu">
         <div className="navbar-start">
-          <div className="navbar-item">
-            <Link to="/">Home</Link>
-          </div>
-          <div className="navbar-item">
-            <Link to="/stores">Stores</Link>
-          </div>
+            <Link className="navbar-item" to="/">Home</Link>
+            <Link className="navbar-item" to="/stores">Stores</Link>
+            <Link className="navbar-item" to="/dashboard">Dashboard</Link>
+            <Link className="navbar-item" to="/addstore">Add Store </Link>
         </div>
       </div>
       <div className="navbar-menu" id="_navMenu">
