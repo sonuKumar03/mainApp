@@ -1,5 +1,4 @@
 import React from "react";
-
 //  00 : 00  to 24:00
 const time = [];
 for (let i = 0; i <= 24; i++) {
@@ -24,7 +23,8 @@ const detectMob = () => {
   });
 };
 
-export const Timing = ({ handleTiming }) => {
+export const Timing = ({handleDays,handleTime}) => {
+  let days = ['Sunday', 'Monday', 'Tuesday', 'Wednesday', 'Thursday', 'Friday', 'Saturday'];
   return (
     <div className=" container has-margin-top-10">
       <div className="label">Timing</div>
@@ -33,61 +33,24 @@ export const Timing = ({ handleTiming }) => {
           Days
         </label>
         <div className="columns is-multiline is-mobile">
-          <div className="column is-narrow">
+          {days.map((day,i)=>{ return (  <div key={i} className="column is-narrow">
             <label className="checkbox is-capitalized">
-              <input className="checkbox" type="checkbox" name="sunday" value="sunday" />
-              sunday
+              <input className="checkbox" type="checkbox" name={day} value={day} onChange={e=>handleDays(e)} />
+              {day}
             </label>
-          </div>
-          <div className="column is-narrow">
-            <label className="checkbox is-capitalized">
-              <input className="checkbox" type="checkbox" name="monday" value="monday" />
-              monday
-            </label>
-          </div>
-          <div className="column   is-narrow">
-            <label className="checkbox is-capitalized">
-              <input className="checkbox" type="checkbox" name="tuesday" value="tuesday" />
-              tuesday
-            </label>
-          </div>
-          <div className="column   is-narrow">
-            <label className="checkbox is-capitalized">
-              <input className="checkbox" type="checkbox" name="wednesday" value="wednesday" />
-              wednesday
-            </label>
-          </div>
-          <div className="column is-narrow">
-            <label className="checkbox is-capitalized">
-              <input className="checkbox" type="checkbox" name="thursday" value="thursday" />
-              thursday
-            </label>
-          </div>
-          <div className="column is-narrow">
-            <label className="checkbox is-capitalized">
-              <input className="checkbox" type="checkbox" name="friday" value="friday" />
-              friday
-            </label>
-          </div>
-          <div className="column is-narrow">
-            <label className="checkbox is-capitalized">
-              <input className="checkbox" type="checkbox" name="saturday" value="saturday" />
-              saturday
-            </label>
-          </div>
+          </div> )})}
         </div>
-        {detectMob() ? <MobileTimePicker handleTiming={handleTiming} /> : <DesktopTimePicker handleTiming={handleTiming} />}
+        {detectMob() ? <MobileTimePicker  handleTime={handleTime} /> : <DesktopTimePicker handleTime={handleTime}/>}
       </div>
     </div>
   );
 };
 
-const DesktopTimePicker = ({ handleTiming }) => {
+const DesktopTimePicker = ({handleTime}) => {
   return (
     <div className="field is-grouped">
-      
       <div className="control is-expanded">
-        <select className="input" name="from">
+        <select className="input" name="from" onChange={e=>handleTime(e)}>
           {time.map((t, i) => (
             <option key={i} value={t}>{`${t}`}</option>
           ))}
@@ -95,14 +58,14 @@ const DesktopTimePicker = ({ handleTiming }) => {
       </div>
       {/* <span className="label has-margin-right-10">-</span> */}
       <div className="control is-expanded">
-        <select className="input" name="to">
+        <select className="input" name="to"  onChange={e=>handleTime(e)}>
           {time.map((t, i) => (
             <option key={i} value={t}>{`${t}`}</option>
           ))}
         </select>
       </div>
       <div className="control">
-        <button className="button is-success" onClick={(e) => handleTiming(e)}>
+        <button className="button is-light" >
           Add Time
         </button>
       </div>
@@ -110,18 +73,18 @@ const DesktopTimePicker = ({ handleTiming }) => {
   );
 };
 
-const MobileTimePicker = ({ handleTiming }) => {
+const MobileTimePicker = ({handleTime}) => {
   return (
     <div className="field is-grouped">
       <div className="control">
-        <input className="input" type="time" defaultValue="08:00" />
+        <input className="input" type="time" defaultValue="08:00" onChange={e=>handleTime(e)}/>
       </div>
       <span className="label has-margin-right-10">-</span>
       <div className="control">
-        <input className="input" type="time" defaultValue="22:00" />
+        <input className="input" type="time" defaultValue="22:00" onChange={e=>handleTime(e)}/>
       </div>
       <div className="control">
-        <button className="button is-light" onClick={(e) => handleTiming(e)}>
+        <button className="button is-light" >
           Add Time
         </button>
       </div>

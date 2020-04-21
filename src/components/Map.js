@@ -19,7 +19,7 @@ export const Map = ({setLocation=f=>{}}) => {
   };
   useEffect(()=>{
     setLocation(state.location);
-  });
+  },[]);
   let updateState  = (location)=>{
     setState(Object.assign({}, state, { location }));
     setLocation(state.location);
@@ -58,7 +58,8 @@ export const Map = ({setLocation=f=>{}}) => {
     marker.on("dragend", e => {
       let lat = marker.getLngLat().lat;
       let  lng = marker.getLngLat().lng;
-      setState(Object.assign({}, state, { location: {  lng,lat} }));
+      // setState(Object.assign({}, state, { location: {  lng,lat} }));
+      updateState({lat,lng});
     });
   };
   useEffect(mapInitialize, []);
