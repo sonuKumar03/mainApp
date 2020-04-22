@@ -1,6 +1,4 @@
 import React, { Component } from "react";
-import { useState } from "react";
-import { addStore } from "../utils/store";
 import firebase from "firebase/app";
 import { connect } from "react-redux";
 import { Timing } from "./AddStore/Timing";
@@ -8,10 +6,15 @@ import { BasicInfo } from "./AddStore/BasicInfo";
 import { Characteristics } from "./AddStore/Characteristics";
 import { Location } from "./AddStore/Location";
 import { ContactInfo } from "./AddStore/ContactInfo";
+
+// TODO: connect everything
+// redux
+import {addStore} from '../Reducers/creators';
 const mapToDispatch = (dispatch) => {
   return {
-    createStore: (uid, store) => {
-      dispatch(addStore({ uid, store }));
+    createStore: (store) => {
+      console.log(store);
+      dispatch(addStore(store));
     },
   };
 };
@@ -43,6 +46,7 @@ class AddStore extends Component {
         days: {},
         time: {},
       },
+      shedule:[],
       location: { coordinates: "" },
       contactInfo: {},
     };
@@ -54,11 +58,25 @@ handleTime = (e)=>{
         ...this.state,
         timing:{
           ...this.state.timing,
-          [e.target.name]: e.target.value
+          time:{
+            ...this.state.timing.time,
+            [e.target.name]: e.target.value
+          }
         },
       })
     );
 }
+handleShedule = (e)=>{
+  // day:
+  // time :{ from :'',to:''}
+  e.preventDefault();
+  let days =Object.keys(this.state.timing.days);
+  let t=days.map((day)=>({day,['time']:this.state.timing.time}));
+  this.setState(Object.assign({},this.state,{
+    shedule:t
+  }),()=>{ console.log(this.state) });
+}
+
   handleContact = (e) => {
     e.preventDefault();
     this.setState(
@@ -142,7 +160,8 @@ handleTime = (e)=>{
   };
   onSubmit = (e) => {
     e.preventDefault();
-    console.log(this.state);
+    let state = this.state;
+    this.props.createStore(state);
     // let s_name = storeName.value;
     // let o_name = ownerName.value;
     // let number = mobileNumber.value;
@@ -160,10 +179,9 @@ handleTime = (e)=>{
       <div>
         <div className="has-margin-top-10">
           <form autoComplete="off">
-            {" "}
             <BasicInfo handleBasic={this.handleBasic} />
             <Characteristics handleTypes={this.handleTypes} handleServices={this.handleServices} />
-            <Timing handleDays={this.handleDays}  handleTime={this.handleTime} />
+            <Timing handleDays={this.handleDays}  handleTime={this.handleTime} handleShedule={this.handleShedule} data={this.state.shedule} />
             <Location handleLocation={this.handleLocation} />
             <ContactInfo handleContact={this.handleContact} />
             <div className="control has-text-centered ">
@@ -177,6 +195,7 @@ handleTime = (e)=>{
     );
   }
 }
+export default AddStore = connect(null, mapToDispatch)(AddStore);
 
 // export default AddStore
 
@@ -216,5 +235,3 @@ handleTime = (e)=>{
 //     </div>
 //   );
 // };
-
-export default AddStore = connect(null, mapToDispatch)(AddStore);

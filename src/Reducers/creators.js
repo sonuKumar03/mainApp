@@ -9,8 +9,10 @@ export const userLogout = payload => {
 };
 
 export const addStore = payload => {
-  return { type: ADD_STORE, ...payload };
+  return { type: ADD_STORE,payload };
 };
 export const addService = payload => {
   return { type: ADD_SERVICE, payload };
 };
+
+// UI creators

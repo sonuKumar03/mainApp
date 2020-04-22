@@ -1,4 +1,6 @@
-import React from "react";
+import React, { Component } from 'react'
+
+import Shedule from "./Shedule";
 //  00 : 00  to 24:00
 const time = [];
 for (let i = 0; i <= 24; i++) {
@@ -23,34 +25,47 @@ const detectMob = () => {
   });
 };
 
-export const Timing = ({handleDays,handleTime}) => {
-  let days = ['Sunday', 'Monday', 'Tuesday', 'Wednesday', 'Thursday', 'Friday', 'Saturday'];
-  return (
-    <div className=" container has-margin-top-10">
+let days = ["Sunday", "Monday", "Tuesday", "Wednesday", "Thursday", "Friday", "Saturday"];
+export class Timing extends Component {
+  handleAddTime = (e)=>{
+    e.preventDefault();
+    console.log('hi');
+  }
+  render() {
+    return (
+      <div className=" container has-margin-top-10">
       <div className="label">Timing</div>
       <div className="box is-mobile">
         <label htmlFor="services" className="label">
           Days
         </label>
         <div className="columns is-multiline is-mobile">
-          {days.map((day,i)=>{ return (  <div key={i} className="column is-narrow">
-            <label className="checkbox is-capitalized">
-              <input className="checkbox" type="checkbox" name={day} value={day} onChange={e=>handleDays(e)} />
-              {day}
-            </label>
-          </div> )})}
+          {days.map((day, i) => {
+            return (
+              <div key={i} className="column is-narrow">
+                <label className="checkbox is-capitalized">
+                  <input className="checkbox" type="checkbox" name={day.toLowerCase()} value={day.toLowerCase()} onChange={(e) => this.props.handleDays(e)} />
+                  {day}
+                </label>
+              </div>
+            );
+          })}
         </div>
-        {detectMob() ? <MobileTimePicker  handleTime={handleTime} /> : <DesktopTimePicker handleTime={handleTime}/>}
+        {detectMob() ? <MobileTimePicker handleTime={ e =>this.props.handleTime(e)} handleShedule={this.props.handleShedule} /> : <DesktopTimePicker handleTime={e=>this.props.handleTime(e)} handleShedule={this.props.handleShedule} />}
+        <Shedule data={this.props.data} />
       </div>
     </div>
-  );
-};
+    )
+  }
+}
 
-const DesktopTimePicker = ({handleTime}) => {
+export default Timing
+
+const DesktopTimePicker = ({ handleTime,handleShedule }) => {
   return (
     <div className="field is-grouped">
       <div className="control is-expanded">
-        <select className="input" name="from" onChange={e=>handleTime(e)}>
+        <select className="input" name="from" onChange={(e) => handleTime(e)}>
           {time.map((t, i) => (
             <option key={i} value={t}>{`${t}`}</option>
           ))}
@@ -58,35 +73,32 @@ const DesktopTimePicker = ({handleTime}) => {
       </div>
       {/* <span className="label has-margin-right-10">-</span> */}
       <div className="control is-expanded">
-        <select className="input" name="to"  onChange={e=>handleTime(e)}>
+        <select className="input" name="to" onChange={(e) => handleTime(e)}>
           {time.map((t, i) => (
             <option key={i} value={t}>{`${t}`}</option>
           ))}
         </select>
       </div>
       <div className="control">
-        <button className="button is-light" >
-          Add Time
-        </button>
+        <button onClick={e=>handleShedule(e)} className="button is-light">Add Time</button>
       </div>
     </div>
   );
 };
 
-const MobileTimePicker = ({handleTime}) => {
+const MobileTimePicker = ({ handleTime ,handleShedule}) => {
   return (
     <div className="field is-grouped">
-      <div className="control">
-        <input className="input" type="time" defaultValue="08:00" onChange={e=>handleTime(e)}/>
+      <div className="control  is-expanded">
+        <input className="input" type="time" defaultValue="08:00" onChange={(e) => handleTime(e)} />
       </div>
       <span className="label has-margin-right-10">-</span>
       <div className="control">
-        <input className="input" type="time" defaultValue="22:00" onChange={e=>handleTime(e)}/>
+        <input className="input" type="time" defaultValue="22:00" onChange={(e) => handleTime(e)} />
       </div>
+      <div className="control"></div>
       <div className="control">
-        <button className="button is-light" >
-          Add Time
-        </button>
+        <button className="button is-light" onClick={e=>handleShedule(e)}>Add Time</button>
       </div>
     </div>
   );

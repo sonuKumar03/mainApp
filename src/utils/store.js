@@ -9,8 +9,8 @@ const db = firebase.firestore();
  * @param store
  * @param uid user id
  */
-export const addStore = ( {store, uid} ) => dipatch => {
-    console.log(store);
+export const addStore = ({ store, uid }) => (dispatch) => {
+  console.log(store);
 };
 
 /**
@@ -20,6 +20,6 @@ export const addStore = ( {store, uid} ) => dipatch => {
  * @param uid
  */
 
-export const addService = ({service, id ,uid}) => dipatch => {
+export const addService = ({ service, id, uid }) => (dipatch) => {
   console.log(service);
 };
